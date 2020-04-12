@@ -2,17 +2,17 @@ package com.fitness.infy.service;
 
 import java.util.List;
 
-import com.fitness.models.Employee_det;
+import com.fitness.models.EmployeeLogin;
 
 public interface SignUpService {
 
-		public String registerEmployee(Employee_det user);
+		public String registerEmployee(EmployeeLogin user);
 	
-		public List<Employee_det> getEmployees();
+		public List<EmployeeLogin> getEmployees();
 
-		public Employee_det getEmployeeById(Integer id) throws Exception;
+		public EmployeeLogin getEmployeeById(Integer id) throws Exception;
 		
-		public String updateEmployee(Employee_det employee);
+		public String updateEmployee(EmployeeLogin employee);
 
 		public String deleteEmployeeById(Integer id);
 		

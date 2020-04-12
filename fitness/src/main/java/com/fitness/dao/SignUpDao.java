@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fitness.infy.service.SignUpService;
-import com.fitness.models.Employee_det;
+import com.fitness.models.EmployeeLogin;
 import com.fitness.repository.EmployeeRepository;
 
 @Service
@@ -31,10 +31,10 @@ public class SignUpDao implements SignUpService {
 	private static String salt = "ssshhhhhhhhhhh!!!!";
 
 	@Override
-	public String registerEmployee(Employee_det employee) {
+	public String registerEmployee(EmployeeLogin employee) {
 
-		Optional<Employee_det> fetchedUser = repo.findById(employee.getEmpId());
-		Employee_det userFromDB = null;
+		Optional<EmployeeLogin> fetchedUser = repo.findById(employee.getStaffId());
+		EmployeeLogin userFromDB = null;
 		if (fetchedUser.isPresent()) {
 			userFromDB = fetchedUser.get();
 		}
@@ -49,21 +49,21 @@ public class SignUpDao implements SignUpService {
 	}
 
 	@Override
-	public List<Employee_det> getEmployees() {
-		ArrayList<Employee_det> list = (ArrayList<Employee_det>) repo.findAll();
+	public List<EmployeeLogin> getEmployees() {
+		ArrayList<EmployeeLogin> list = (ArrayList<EmployeeLogin>) repo.findAll();
 		return list;
 	}
 
 	@Override
-	public Employee_det getEmployeeById(Integer id) throws Exception {
-		Optional<Employee_det> employee = repo.findById(id);
+	public EmployeeLogin getEmployeeById(Integer id) throws Exception {
+		Optional<EmployeeLogin> employee = repo.findById(id);
 		return employee.get();
 
 	}
 
 	@Override
-	public String updateEmployee(Employee_det employee) {
-		Optional<Employee_det> fetchedUser = repo.findById(employee.getEmpId());
+	public String updateEmployee(EmployeeLogin employee) {
+		Optional<EmployeeLogin> fetchedUser = repo.findById(employee.getStaffId());
 		if (fetchedUser.isPresent()) {
 			BCryptPasswordEncoder pwd = new BCryptPasswordEncoder();
 			employee.setPassword(pwd.encode(employee.getPassword()));
@@ -78,7 +78,7 @@ public class SignUpDao implements SignUpService {
 	@Override
 	public String deleteEmployeeById(Integer id) {
 		repo.deleteById(id);
-		Optional<Employee_det> fetchedUser = repo.findById(id);
+		Optional<EmployeeLogin> fetchedUser = repo.findById(id);
 		if (!fetchedUser.isPresent()) {
 			return "Your profile is deleted successfully";
 		} else {
@@ -89,9 +89,9 @@ public class SignUpDao implements SignUpService {
 	@Override
 	public boolean authenticateUser(String username, String password) {
 
-		Employee_det fetchedUser = repo.findByUnameAndPwd(username);
+		EmployeeLogin fetchedUser = repo.findByUnameAndPwd(username);
 
-		if (fetchedUser != null && (fetchedUser.getEmpId() > 0)
+		if (fetchedUser != null && (fetchedUser.getStaffId() > 0)
 				&& password.equals(decrypt(fetchedUser.getPassword()))) {
 			return true;
 

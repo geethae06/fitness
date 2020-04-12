@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.fitness.models.Employee_det;
+import com.fitness.models.EmployeeLogin;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee_det, Integer> {
+public interface EmployeeRepository extends JpaRepository<EmployeeLogin, Integer> {
 
-	@Query("select e from Employee_det e where e.userName =:uname")
-	public Employee_det findByUnameAndPwd(@Param("uname") String uname);
+	@Query("select e from EmployeeLogin e where e.username =:uname")
+	public EmployeeLogin findByUnameAndPwd(@Param("uname") String uname);
 }
