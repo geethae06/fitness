@@ -65,8 +65,7 @@ public class SignUpDao implements SignUpService {
 	public String updateEmployee(EmployeeLogin employee) {
 		Optional<EmployeeLogin> fetchedUser = repo.findById(employee.getStaffId());
 		if (fetchedUser.isPresent()) {
-			BCryptPasswordEncoder pwd = new BCryptPasswordEncoder();
-			employee.setPassword(pwd.encode(employee.getPassword()));
+			employee.setPassword(encrypt(employee.getPassword()));
 			repo.save(employee);
 			return "User details updated successfully !!!";
 		} else {
