@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fitness.infy.service.SignUpService;
-import com.fitness.models.EmployeeLogin;
+import com.fitness.models.EmployeeSignup;
 import com.fitness.repository.EmployeeRepository;
 
 @Service
@@ -31,10 +31,10 @@ public class SignUpDao implements SignUpService {
 	private static String salt = "ssshhhhhhhhhhh!!!!";
 
 	@Override
-	public String registerEmployee(EmployeeLogin employee) {
+	public String registerEmployee(EmployeeSignup employee) {
 
-		Optional<EmployeeLogin> fetchedUser = repo.findById(employee.getStaffId());
-		EmployeeLogin userFromDB = null;
+		Optional<EmployeeSignup> fetchedUser = repo.findById(employee.getStaffId());
+		EmployeeSignup userFromDB = null;
 		if (fetchedUser.isPresent()) {
 			userFromDB = fetchedUser.get();
 		}
@@ -49,27 +49,27 @@ public class SignUpDao implements SignUpService {
 	}
 
 	@Override
-	public List<EmployeeLogin> getEmployees() {
-		ArrayList<EmployeeLogin> list = (ArrayList<EmployeeLogin>) repo.findAll();
+	public List<EmployeeSignup> getEmployees() {
+		ArrayList<EmployeeSignup> list = (ArrayList<EmployeeSignup>) repo.findAll();
 		return list;
 	}
 
 	@Override
-	public EmployeeLogin getEmployeeById(Integer id) throws Exception {
-		Optional<EmployeeLogin> employee = repo.findById(id);
+	public EmployeeSignup getEmployeeById(Integer id) throws Exception {
+		Optional<EmployeeSignup> employee = repo.findById(id);
 		return employee.get();
 
 	}
 
 	@Override
-	public String updateEmployee(EmployeeLogin employee) {
-		Optional<EmployeeLogin> fetchedUser = repo.findById(employee.getStaffId());
+	public String updateEmployee(EmployeeSignup employee) {
+		Optional<EmployeeSignup> fetchedUser = repo.findById(employee.getStaffId());
 		if (fetchedUser.isPresent()) {
 			employee.setPassword(encrypt(employee.getPassword()));
 			repo.save(employee);
-			return "User details updated successfully !!!";
+			return "Employee details updated successfully !!!";
 		} else {
-			return "User does not exists to update details !!!";
+			return "Employee does not exist to update details !!!";
 		}
 
 	}
@@ -77,7 +77,7 @@ public class SignUpDao implements SignUpService {
 	@Override
 	public String deleteEmployeeById(Integer id) {
 		repo.deleteById(id);
-		Optional<EmployeeLogin> fetchedUser = repo.findById(id);
+		Optional<EmployeeSignup> fetchedUser = repo.findById(id);
 		if (!fetchedUser.isPresent()) {
 			return "Your profile is deleted successfully";
 		} else {
@@ -86,11 +86,12 @@ public class SignUpDao implements SignUpService {
 	}
 
 	@Override
-	public boolean authenticateUser(String username, String password) {
+	public boolean authenticateUser(int staffId, String password) {
 
-		EmployeeLogin fetchedUser = repo.findByUnameAndPwd(username);
+		Optional<EmployeeSignup> userFromDB = repo.findById(staffId);
+		EmployeeSignup fetchedUser = userFromDB.get();
 
-		if (fetchedUser != null && (fetchedUser.getStaffId() > 0)
+		if (fetchedUser != null && (fetchedUser.getStaffId() == staffId)
 				&& password.equals(decrypt(fetchedUser.getPassword()))) {
 			return true;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fitness.infy.service.SignUpService;
-import com.fitness.models.EmployeeLogin;
+import com.fitness.models.EmployeeSignup;
 
 @RestController
 public class SignUpController {
@@ -22,22 +22,22 @@ public class SignUpController {
 	SignUpService service;
 	
 	@PostMapping("/employee")
-	public String registerUser(@RequestBody EmployeeLogin user) {		
+	public String registerUser(@RequestBody EmployeeSignup user) {		
 		return service.registerEmployee(user);
 	}
 	
 	@GetMapping("/employee")
-	public List<EmployeeLogin> getEmployees() {
+	public List<EmployeeSignup> getEmployees() {
 		return service.getEmployees();
 	}
 	
 	@GetMapping("/employee/id/{id}")
-	public EmployeeLogin getEmployeeById(@PathVariable Integer id) throws Exception {
+	public EmployeeSignup getEmployeeById(@PathVariable Integer id) throws Exception {
 		return service.getEmployeeById(id);
 	}
 	
 	@PutMapping("/employee")
-	public String updateEmployee(@RequestBody EmployeeLogin user) {	
+	public String updateEmployee(@RequestBody EmployeeSignup user) {	
 		return service.updateEmployee(user);
 	}
 	
@@ -46,8 +46,8 @@ public class SignUpController {
 		return service.deleteEmployeeById(id);
 	}
 		
-	@PostMapping("/employee/authenticate/{username}/{password}")
-	public boolean authenticate(@PathVariable String username,@PathVariable String password) {		
-		return service.authenticateUser(username,password);
+	@PostMapping("/employee/authenticate/{staffId}/{password}")
+	public boolean authenticate(@PathVariable int staffId,@PathVariable String password) {		
+		return service.authenticateUser(staffId,password);
 	}
 }
